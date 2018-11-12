@@ -6,7 +6,7 @@
   <includeBaseDirectory>false</includeBaseDirectory>
   <fileSets>
     <fileSet>
-      <directory>angularjs_ecommerce</directory>
+      <directory>src</directory>
       <outputDirectory>app1</outputDirectory>
     </fileSet>
   </fileSets>
