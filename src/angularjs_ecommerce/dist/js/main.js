@@ -1,214 +1,239 @@
 (function () {
-  'use strict';
-//defined first module of application and gave name of app : myApp with required import modules  
-  angular.module("myApp", ["ui.router",'ngSanitize'])
+    'use strict';
+    //defined first module of application and gave name of app : myApp with required import modules  
+    angular.module("myApp", ["ui.router", 'ngSanitize'])
 
-  //set up configuration
-  .config(function ($stateProvider, $urlRouterProvider) {
-    $urlRouterProvider.otherwise('/');
-    $stateProvider
-    .state('layout.home', {
-      url: '/',
-      templateUrl: '../views/dashboard.html',
-      controller:'dashboard',
-      controllerAs:'vm',
-    })
-    .state('layout.cart', {
-      url: '/cart',
-      templateUrl: '../views/cart.html',
-      resolve: {
-        auththenticate: ['$q','Authorization', function($q, Authorization) {
-          if(Authorization.authorized != true) { 
-            return $q.reject("AUTH_REQUIRED");
-          }else $q.resolve();
-        }]
-      }
-    })
-    .state('layout.men', {
-      url: '/product/men',
-      templateUrl: '../views/product/product.list.html',
-      controller:'ProductCtrl',
-      controllerAs:'vm'
-    })
-    .state('layout.women', {
-      url: '/product/women',
-      templateUrl: '../views/product/product.list.html',
-      controller:'ProductCtrl',
-      controllerAs:'vm'
-    })
-    .state('layout.kids', {
-      url: '/product/kids',
-      templateUrl: '../views/product/product.list.html',
-      controller:'ProductCtrl',
-      controllerAs:'vm'
-    })
-    .state('login', {
-      url: '/login',
-      templateUrl: '../views/login.html',
-      resolve: {
-        auththenticate: ['$q','Authorization', function($q, Authorization) {
-          if(Authorization.authorized == true) {
-            return $q.reject("AUTHORIZED"); 
-          }
-        }]
-      }
-    })
-    .state('register', {
-      url: '/signup',
-      templateUrl: '../views/register.html',
-      resolve: {
-        auththenticate: ['$q','Authorization', function($q, Authorization) {
-          if(Authorization.authorized == true) {
-            return $q.reject("AUTHORIZED"); 
-          }
-        }]
-      }
-    })
-    .state('layout', {
-      url: '',
-      templateUrl: '../views/main.html',
-      controller:'main',
-      redirectTo:'layout.home',
-    })
-    .state('auth',{
-      url:'auth',
-      controller: function($scope, $state, Authorization) {
-        Authorization.go('layout.home');
-      },
-    })
-    .state('logout',{
-      url:'logout',
-      controller: function($scope, $state, Authorization) {
-        Authorization.clear();
-        $state.go('layout.home');
-      },
-    })
-  })
-  
-  .run(function($rootScope, $state,  $transitions, Authorization) {
-    $transitions.onError({}, function(transition) {        
-      if(transition.$to().name === 'layout.cart' && transition.error().detail === 'AUTH_REQUIRED') {
-        $state.go('login');
-      }
-      if(transition.$to().name === 'login' && transition.error().detail === 'AUTHORIZED') {
-        $state.go('layout.home');
-      }
-      if(transition.$to().name === 'register' && transition.error().detail === 'AUTHORIZED') {
-        $state.go('layout.home');
-      }
-    });
-  
-  })
+        //setting up configuration
+        .config(function ($stateProvider, $urlRouterProvider) {
+            $urlRouterProvider.otherwise('/');
+            $stateProvider
+                .state('layout.home', {
+                    url: '/',
+                    templateUrl: '../views/dashboard.html',
+                    controller: 'dashboard',
+                    controllerAs: 'vm',
+                })
+                .state('layout.cart', {
+                    url: '/cart',
+                    templateUrl: '../views/cart.html',
+                    resolve: {
+                        auththenticate: ['$q', 'Authorization', function ($q, Authorization) {
+                            if (Authorization.authorized != true) {
+                                return $q.reject("AUTH_REQUIRED");
+                            } else $q.resolve();
+                        }]
+                    }
+                })
+                .state('layout.men', {
+                    url: '/product/men',
+                    templateUrl: '../views/product/product.list.html',
+                    controller: 'ProductCtrl',
+                    controllerAs: 'vm'
+                })
+                .state('layout.women', {
+                    url: '/product/women',
+                    templateUrl: '../views/product/product.list.html',
+                    controller: 'ProductCtrl',
+                    controllerAs: 'vm'
+                })
+                .state('layout.kids', {
+                    url: '/product/kids',
+                    templateUrl: '../views/product/product.list.html',
+                    controller: 'ProductCtrl',
+                    controllerAs: 'vm'
+                })
+                .state('login', {
+                    url: '/login',
+                    templateUrl: '../views/login.html',
+                    resolve: {
+                        auththenticate: ['$q', 'Authorization', function ($q, Authorization) {
+                            if (Authorization.authorized == true) {
+                                return $q.reject("AUTHORIZED");
+                            }
+                        }]
+                    }
+                })
+                .state('register', {
+                    url: '/signup',
+                    templateUrl: '../views/register.html',
+                    resolve: {
+                        auththenticate: ['$q', 'Authorization', function ($q, Authorization) {
+                            if (Authorization.authorized == true) {
+                                return $q.reject("AUTHORIZED");
+                            }
+                        }]
+                    }
+                })
+                .state('layout', {
+                    url: '',
+                    templateUrl: '../views/main.html',
+                    controller: 'main',
+                    redirectTo: 'layout.home',
+                })
+                .state('auth', {
+                    url: 'auth',
+                    controller: function ($scope, $state, Authorization) {
+                        Authorization.go('layout.home');
+                    },
+                })
+                .state('logout', {
+                    url: 'logout',
+                    controller: function ($scope, $state, Authorization) {
+                        Authorization.clear();
+                        $state.go('layout.home');
+                    },
+                })
+        })
 
-  .service('Authorization', function($state) {
+        .run(function ($rootScope, $state, $transitions, Authorization) {
+            $transitions.onError({}, function (transition) {
+                if (transition.$to().name === 'layout.cart' && transition.error().detail === 'AUTH_REQUIRED') {
+                    $state.go('login');
+                }
+                if (transition.$to().name === 'login' && transition.error().detail === 'AUTHORIZED') {
+                    $state.go('layout.home');
+                }
+                if (transition.$to().name === 'register' && transition.error().detail === 'AUTHORIZED') {
+                    $state.go('layout.home');
+                }
+            });
 
-    this.authorized = false;
-    localStorage["Authentication"] = false;
-    this.memorizedState = null;
-  
-    var
-    clear = function() {
-      this.authorized = false;
-      localStorage["Authentication"] =  this.authorized;
-      this.memorizedState = null;
-    },
-  
-    go = function(fallback) {
-      this.authorized = true;
-      localStorage["Authentication"] =  this.authorized;
-      var targetState = this.memorizedState ? this.memorizedState : fallback;
-      $state.go(targetState);
-    };
-  
-    return {
-      authorized: this.authorized,
-      memorizedState: this.memorizedState,
-      clear: clear,
-      go: go
-    };
-  });
-  
+        })
+
+        .service('Authorization', function ($state) {
+
+            this.authorized = false;
+            localStorage["Authentication"] = false;
+            this.memorizedState = null;
+
+            var
+                clear = function () {
+                    this.authorized = false;
+                    localStorage["Authentication"] = this.authorized;
+                    this.memorizedState = null;
+                },
+
+                go = function (fallback) {
+                    this.authorized = true;
+                    localStorage["Authentication"] = this.authorized;
+                    var targetState = this.memorizedState ? this.memorizedState : fallback;
+                    $state.go(targetState);
+                };
+
+            return {
+                authorized: this.authorized,
+                memorizedState: this.memorizedState,
+                clear: clear,
+                go: go
+            };
+        });
+
 })();
 
 (function () {
-  'use strict'; 
-  //defined service in myapp module: dashboard service with required packages(http) 
+    'use strict';
+    //defining service in myapp module: dashboard service with required packages http
     angular.module('myApp')
-            .service('dashboardService', function ($http) {
+        .service('dashboardService', function ($http) {
             var dashboardService = this;
             //set http request header 
             $http.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
             //service method 
             dashboardService.getProductList = () => {
-              //http get call.return type promise
+                //http get call.return type promise
                 return $http.get('../../data/ListData.json');
             }
 
-        }); 
+        });
 })();
 
 
-(function () {
-  'use strict'; 
-  //defined controller in myApp module with service import
-  angular.module("myApp")
-  .controller('main',function ($scope){
-  console.log(localStorage["Authentication"]);
-  $scope.isAuthentication = localStorage["Authentication"];
-  })
-  })();
-
-(function () {
-  'use strict'; 
-  //defined controller in myApp module with service import
-    angular.module("myApp")
-            .controller('dashboard',function (dashboardService){
-        var vm = this;
-
-        //defined two-way binding  variable
-        vm.ListData = [];
-    
-        //defined controller method 
-        vm.getProduct = () => {
-          //calling service method
-          dashboardService.getProductList().then((res)=>{
-              vm.ListData = res.data.objects;
-          }).catch((err)=>{
-              console.error(err);
-          })
-        }
-    })
-})();
 (function () {
     'use strict';
-    
+    //defining controler in myApp module with service import
+    angular.module("myApp")
+        .controller('main', function ($scope) {
+            console.log(localStorage["Authentication"]);
+            $scope.isAuthentication = localStorage["Authentication"];
+        })
+})();
+
+(function () {
+    'use strict';
+    //defining controler in myApp module with service import
+    angular.module("myApp")
+        .controller('dashboard', function (dashboardService, $filter) {
+            var vm = this;
+
+            //define two-way binding  variable
+            vm.ListData = [];
+
+            //define controler method 
+            vm.getProduct = () => {
+                //call service method
+                dashboardService.getProductList().then((res) => {
+                    vm.ListData = res.data.objects;
+                    vm.colorData = ["All", "red", "black"];
+                }).catch((err) => {
+                    console.error(err);
+                })
+            }
+            vm.getFilterProduct = (item) => {
+                console.log(item);
+                dashboardService.getProductList().then((res) => {
+                    vm.ListData = res.data.objects;
+                    if (item == 'black') {
+                        vm.ListData = $filter('filter')(vm.ListData, {
+                            title: 'Description 2'
+                        });
+                    } else if (item == 'red') {
+                        vm.ListData = $filter('filter')(vm.ListData, {
+                            title: 'Description 1'
+                        });
+                    } else {
+
+                    }
+                }).catch((err) => {
+                    console.error(err);
+                })
+
+
+
+            }
+        })
+})();
+
+
+(function () {
+    'use strict';
+
     angular
         .module('main2', [
-           
+
             'ngRoute',
-           
+
         ]).config(function ($routeProvider) {
             $routeProvider
-              .when('/', {
-                templateUrl: '../views/dashboard.html'
-              })
-              .when('/login', {
-                templateUrl: '../views/login.html'
-              })
-              .when('/logout', {
-                controller: 'logoutController'
-              })
-              .when('/register', {
-                templateUrl: '../views/register.html'
-              })
-              .when('/cart', {
-                templateUrl: '../views/cart.html'
-              })
-              .otherwise({
-                redirectTo: '/'
-              });
-          });
+                .when('/', {
+                    templateUrl: '../views/dashboard.html'
+                })
+                .when('/login', {
+                    templateUrl: '../views/login.html'
+                })
+                .when('/logout', {
+                    controller: 'logoutController'
+                })
+                .when('/register', {
+                    templateUrl: '../views/register.html'
+                })
+                .when('/cart', {
+                    templateUrl: '../views/cart.html'
+                })
+                .otherwise({
+                    redirectTo: '/'
+                });
+        });
 
     // config.$inject = ['$stateProvider', '$urlRouterProvider', 'cfpLoadingBarProvider', 'NotificationProvider', 'StripeCheckoutProvider', 'STRIPE_KEY'];
     // function config($stateProvider, $urlRouterProvider, cfpLoadingBarProvider, NotificationProvider, StripeCheckoutProvider, STRIPE_KEY) {
@@ -233,7 +258,7 @@
     //         var crAcl = $injector.get("crAcl");
 
     //         var state = "";
-            
+
     //         switch (crAcl.getRole()) {
     //             case 'ROLE_ADMIN':
     //                 state = 'admin.products';
@@ -244,7 +269,7 @@
     //         if (state) $state.go(state);
     //         else $location.path('/');
     //     });
- 
+
     //     $stateProvider
     //         .state('main', {
     //             url: '/',
@@ -302,9 +327,9 @@
     // }
 
 })();
- 
+
 (function () {
-    'use strict'; 
+    'use strict';
 
     angular
         .module('main')
@@ -312,9 +337,9 @@
 
     function UserCtrl($rootScope, $scope, $state, AuthService, Flash, $log) {
         var vm = this;
-        
+
         vm.currentUser = $rootScope.globals.currentUser.metadata;
-        
+
         vm.logout = logout;
 
         function logout() {
@@ -340,7 +365,7 @@
 
 (function () {
     'use strict';
-    
+
     angular
         .module('admin', [
             'admin.products',
@@ -349,6 +374,7 @@
         .config(config);
 
     config.$inject = ['$stateProvider', '$urlRouterProvider'];
+
     function config($stateProvider, $urlRouterProvider) {
 
         $stateProvider
@@ -364,125 +390,9 @@
     }
 
 })();
- 
-(function () {
-    'use strict'; 
-
-    angular
-        .module('main')
-        .controller('AuthCtrl', AuthCtrl);
-
-    function AuthCtrl(crAcl, $state, AuthService, Flash, $log) {
-        var vm = this;              
-
-        vm.login = login;
-        
-        vm.showRegisterForm = false;
-        
-        vm.loginForm = null;
-        
-        vm.credentials = {};
-        vm.user = {};
-
-        function login(credentials) {
-            function success(response) {
-                function success(response) {
-                    if (response.data.status !== 'empty') {
-                        var currentUser = response.data.objects[0];
-
-                        crAcl.setRole(currentUser.metadata.role);
-                        AuthService.setCredentials(currentUser);
-                        $state.go('admin.products');
-                    }
-                    else
-                        Flash.create('danger', 'Incorrect username or password');
-                }
-
-                function failed(response) {
-                    $log.error(response);
-                }
-
-                if (response.data.status !== 'empty')
-                    AuthService
-                        .checkPassword(credentials)
-                        .then(success, failed);
-                else
-                    Flash.create('danger', 'Incorrect username or password');
-
-                $log.info(response);
-            }
-
-            function failed(response) {
-                $log.error(response);
-            }
-
-            if (vm.loginForm.$valid)
-                AuthService
-                    .checkUsername(credentials)
-                    .then(success, failed);
-        }
-
-    }
-})();
 
 (function () {
     'use strict';
-
-    angular
-        .module('main')
-        .service('AuthService', function ($http, 
-                                          $cookieStore, 
-                                          $q, 
-                                          $rootScope, 
-                                          URL, BUCKET_SLUG, READ_KEY, WRITE_KEY) {
-            var authService = this;
-            $http.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-
-            authService.checkUsername = function (credentials) {
-                return $http.get(URL + BUCKET_SLUG + '/object-type/users/search', {
-                    params: {
-                        metafield_key: 'email',
-                        metafield_value_has: credentials.email,
-                        limit: 1,
-                        read_key: READ_KEY
-                    }
-                });
-            };
-            authService.checkPassword = function (credentials) {
-                return $http.get(URL + BUCKET_SLUG + '/object-type/users/search', {
-                    ignoreLoadingBar: true,
-                    params: {
-                        metafield_key: 'password',
-                        metafield_value: credentials.password,
-                        limit: 1,
-                        read_key: READ_KEY
-                    }
-                });
-            };
-            authService.setCredentials = function (user) { 
-                $rootScope.globals = {
-                    currentUser: user
-                };
-                
-                $cookieStore.put('globals', $rootScope.globals);
-            };
-            authService.clearCredentials = function () {
-                var deferred = $q.defer();
-                $cookieStore.remove('globals');
-
-                if (!$cookieStore.get('globals')) {
-                    $rootScope.globals = {};
-                    deferred.resolve('Credentials clear success');
-                } else {
-                    deferred.reject('Can\'t clear credentials');
-                }
-
-                return deferred.promise;
-            };
-        });  
-})();  
-(function () {
-    'use strict'; 
 
     angular
         .module('main')
@@ -508,21 +418,20 @@
             key: STRIPE_KEY,
             image: 'https://cosmicjs.com/images/logo.svg',
             locale: 'auto',
-            token: function(token) {
-            }
+            token: function (token) {}
         });
 
-        window.addEventListener('popstate', function() {
+        window.addEventListener('popstate', function () {
             handler.close();
         });
-        
+
         function stripeCheckout(order) {
             if (vm.orderForm.$valid) {
                 handler.open({
                     name: 'Ecommerce App',
                     description: vm.products.length + ' products',
                     amount: vm.totalPrice * 100
-                }).then(function(result) {
+                }).then(function (result) {
                     console.log("Order complete!");
                     $http.post('/charge', {
                         stripeToken: result[0].id,
@@ -532,7 +441,7 @@
                     }).then(function () {
                         completeOrder(order);
                     });
-                },function() {
+                }, function () {
                     console.log("Stripe Checkout closed without making a sale :(");
                 });
             }
@@ -570,8 +479,8 @@
 
             if (vm.orderForm.$valid)
                 CartService
-                    .completeOrder(order)
-                    .then(success, failed);
+                .completeOrder(order)
+                .then(success, failed);
         }
 
         function removeFromCart(_id) {
@@ -646,16 +555,17 @@
 
 (function () {
     'use strict';
-    
+
     angular
         .module('cart', [
             'cart.checkout'
         ])
-        .config(config); 
+        .config(config);
 
     config.$inject = ['$stateProvider', 'StripeCheckoutProvider'];
+
     function config($stateProvider, StripeCheckoutProvider) {
- 
+
         $stateProvider
             .state('main.cart', {
                 url: 'cart',
@@ -663,20 +573,20 @@
             });
     }
 })();
- 
+
 (function () {
     'use strict';
 
     angular
         .module('main')
-        .service('CartService', function ($http, 
-                                          $cookieStore, 
-                                          $q, 
-                                          $rootScope,
-                                          URL, BUCKET_SLUG, READ_KEY, WRITE_KEY) {
+        .service('CartService', function ($http,
+            $cookieStore,
+            $q,
+            $rootScope,
+            URL, BUCKET_SLUG, READ_KEY, WRITE_KEY) {
             var that = this;
             $http.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-            
+
             that.addToCart = function (item) {
                 var deferred = $q.defer();
 
@@ -746,8 +656,7 @@
                     write_key: WRITE_KEY,
                     title: order.firstName + ' ' + order.lastName,
                     type_slug: "orders",
-                    metafields: [
-                        {
+                    metafields: [{
                             key: "first_name",
                             type: "text",
                             value: order.firstName
@@ -779,7 +688,7 @@
                         },
                         {
                             key: "postal_code",
-                            type: "text", 
+                            type: "text",
                             value: order.postalCode
 
                         },
@@ -797,35 +706,189 @@
                     ]
                 });
             };
-        });  
-})();  
+        });
+})();
 angular.module("config", [])
-.constant("BUCKET_SLUG", "d95fa870-d75f-11e8-9661-272fca804673")
-.constant("MEDIA_URL", "https://api.cosmicjs.com/v1/undefined/media")
-.constant("URL", "https://api.cosmicjs.com/v1/")
-.constant("READ_KEY", "nGUQkzPfIVuJfPQT1ZxOHhRd4ZliKgCwRHvMMil1qdoiJ1qqI8")
-.constant("WRITE_KEY", "8O5Td5hzqYkCiYlzkUdWwOjOYypTvGoX380g5Ojo8iYuwqrUDl")
-.constant("STRIPE_KEY", "");
+    .constant("BUCKET_SLUG", "d95fa870-d75f-11e8-9661-272fca804673")
+    .constant("MEDIA_URL", "https://api.cosmicjs.com/v1/undefined/media")
+    .constant("URL", "https://api.cosmicjs.com/v1/")
+    .constant("READ_KEY", "nGUQkzPfIVuJfPQT1ZxOHhRd4ZliKgCwRHvMMil1qdoiJ1qqI8")
+    .constant("WRITE_KEY", "8O5Td5hzqYkCiYlzkUdWwOjOYypTvGoX380g5Ojo8iYuwqrUDl")
+    .constant("STRIPE_KEY", "");
 
 (function () {
     'use strict';
 
     angular
-    .module('layout')
-    .config(config); 
+        .module('main')
+        .controller('AuthCtrl', AuthCtrl);
 
-    config.$inject = ['$stateProvider', 'StripeCheckoutProvider'];
-        function config($stateProvider, StripeCheckoutProvider) {
-    
-            $stateProvider
-                .state('myApp.layout', {
-                    url: '',
-                    templateUrl: '../views/product.list.html'
-                });
+    function AuthCtrl(crAcl, $state, AuthService, Flash, $log) {
+        var vm = this;
+
+        vm.login = login;
+
+        vm.showRegisterForm = false;
+
+        vm.loginForm = null;
+
+        vm.credentials = {};
+        vm.user = {};
+
+        function login(credentials) {
+            function success(response) {
+                function success(response) {
+                    if (response.data.status !== 'empty') {
+                        var currentUser = response.data.objects[0];
+
+                        crAcl.setRole(currentUser.metadata.role);
+                        AuthService.setCredentials(currentUser);
+                        $state.go('admin.products');
+                    } else
+                        Flash.create('danger', 'Incorrect username or password');
+                }
+
+                function failed(response) {
+                    $log.error(response);
+                }
+
+                if (response.data.status !== 'empty')
+                    AuthService
+                    .checkPassword(credentials)
+                    .then(success, failed);
+                else
+                    Flash.create('danger', 'Incorrect username or password');
+
+                $log.info(response);
+            }
+
+            function failed(response) {
+                $log.error(response);
+            }
+
+            if (vm.loginForm.$valid)
+                AuthService
+                .checkUsername(credentials)
+                .then(success, failed);
         }
+
+    }
+})();
+
+(function () {
+    'use strict';
+
+    angular
+        .module('main')
+        .service('AuthService', function ($http,
+            $cookieStore,
+            $q,
+            $rootScope,
+            URL, BUCKET_SLUG, READ_KEY, WRITE_KEY) {
+            var authService = this;
+            $http.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+
+            authService.checkUsername = function (credentials) {
+                return $http.get(URL + BUCKET_SLUG + '/object-type/users/search', {
+                    params: {
+                        metafield_key: 'email',
+                        metafield_value_has: credentials.email,
+                        limit: 1,
+                        read_key: READ_KEY
+                    }
+                });
+            };
+            authService.checkPassword = function (credentials) {
+                return $http.get(URL + BUCKET_SLUG + '/object-type/users/search', {
+                    ignoreLoadingBar: true,
+                    params: {
+                        metafield_key: 'password',
+                        metafield_value: credentials.password,
+                        limit: 1,
+                        read_key: READ_KEY
+                    }
+                });
+            };
+            authService.setCredentials = function (user) {
+                $rootScope.globals = {
+                    currentUser: user
+                };
+
+                $cookieStore.put('globals', $rootScope.globals);
+            };
+            authService.clearCredentials = function () {
+                var deferred = $q.defer();
+                $cookieStore.remove('globals');
+
+                if (!$cookieStore.get('globals')) {
+                    $rootScope.globals = {};
+                    deferred.resolve('Credentials clear success');
+                } else {
+                    deferred.reject('Can\'t clear credentials');
+                }
+
+                return deferred.promise;
+            };
+        });
 })();
 (function () {
-    'use strict'; 
+    'use strict';
+
+    angular
+        .module('layout')
+        .config(config);
+
+    config.$inject = ['$stateProvider', 'StripeCheckoutProvider'];
+
+    function config($stateProvider, StripeCheckoutProvider) {
+
+        $stateProvider
+            .state('myApp.layout', {
+                url: '',
+                templateUrl: '../views/product.list.html'
+            });
+    }
+})();
+(function () {
+    'use strict';
+
+    angular
+        .module('main')
+        .service('UserService', function ($http,
+            $cookieStore,
+            $q,
+            $rootScope,
+            URL, BUCKET_SLUG, READ_KEY, WRITE_KEY) {
+            $http.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+
+            this.getCurrentUser = function (ignoreLoadingBar) {
+                return $http.get(URL + BUCKET_SLUG + '/object/' + $rootScope.globals.currentUser.slug, {
+                    ignoreLoadingBar: ignoreLoadingBar,
+                    params: {
+                        read_key: READ_KEY
+                    }
+                });
+            };
+            this.getUser = function (slug, ignoreLoadingBar) {
+                return $http.get(URL + BUCKET_SLUG + '/object/' + slug, {
+                    ignoreLoadingBar: ignoreLoadingBar,
+                    params: {
+                        read_key: READ_KEY
+                    }
+                });
+            };
+            this.updateUser = function (user) {
+                user.write_key = WRITE_KEY;
+
+                return $http.put(URL + BUCKET_SLUG + '/edit-object', user, {
+                    ignoreLoadingBar: false
+                });
+            };
+
+        });
+})();
+(function () {
+    'use strict';
 
     angular
         .module('myApp')
@@ -833,8 +896,8 @@ angular.module("config", [])
 
     function ProductCtrl($stateParams, ProductService, $log) {
         var vm = this;
-        
-        
+
+
         //vm.getProducts = getProducts;
         //vm.removeProduct = removeProduct;
 
@@ -844,23 +907,23 @@ angular.module("config", [])
         vm.brands = [];
         vm.case_sizes = [];
         vm.colors = [];
-        
+
         vm.products = [];
         vm.getProduct = () => {
-            //calling service method
-            ProductService.getProductList().then((res)=>{
+            //call service method
+            ProductService.getProductList().then((res) => {
                 console.log("call");
                 vm.products = res.data.objects;
-            }).catch((err)=>{
+            }).catch((err) => {
                 console.error(err);
             })
-          }
+        }
     }
 })();
 
 (function () {
     'use strict';
-    
+
     angular
         .module('product', [
             'product.profile'
@@ -868,8 +931,9 @@ angular.module("config", [])
         .config(config);
 
     config.$inject = ['$stateProvider', '$urlRouterProvider'];
+
     function config($stateProvider, $urlRouterProvider) {
- 
+
         $stateProvider
             .state('main.product', {
                 url: '?key&value',
@@ -878,7 +942,7 @@ angular.module("config", [])
             });
     }
 })();
- 
+
 (function () {
     'use strict';
 
@@ -889,8 +953,8 @@ angular.module("config", [])
             $http.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
             var ProductService = this;
             ProductService.getProductList = () => {
-                //http get call.return type promise
-                  return $http.get('../../data/ListData.json');
+                //http get call.return type promise.
+                return $http.get('../../data/ListData.json');
             }
 
             // this.getProducts = function (params) {
@@ -977,47 +1041,9 @@ angular.module("config", [])
             //     return defer.promise;
             // }
         });
-})();  
+})();
 (function () {
     'use strict';
-
-    angular
-        .module('main')
-        .service('UserService', function ($http, 
-                                          $cookieStore, 
-                                          $q, 
-                                          $rootScope, 
-                                          URL, BUCKET_SLUG, READ_KEY, WRITE_KEY) {
-            $http.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-
-            this.getCurrentUser = function (ignoreLoadingBar) {
-                return $http.get(URL + BUCKET_SLUG + '/object/' + $rootScope.globals.currentUser.slug, {
-                    ignoreLoadingBar: ignoreLoadingBar,
-                    params: {
-                        read_key: READ_KEY
-                    }
-                });
-            };
-            this.getUser = function (slug, ignoreLoadingBar) {
-                return $http.get(URL + BUCKET_SLUG + '/object/' + slug, {
-                    ignoreLoadingBar: ignoreLoadingBar,
-                    params: {
-                        read_key: READ_KEY
-                    }
-                });
-            };
-            this.updateUser = function (user) {
-                user.write_key = WRITE_KEY;
-
-                return $http.put(URL + BUCKET_SLUG + '/edit-object', user, {
-                    ignoreLoadingBar: false
-                });
-            };
-
-        });  
-})();  
-(function () {
-    'use strict'; 
 
     angular
         .module('main')
@@ -1026,7 +1052,7 @@ angular.module("config", [])
     function AdminOrdersCtrl($rootScope, $scope, Notification, AdminOrdersService, Flash, $log) {
         var vm = this;
 
-        vm.getOrders = getOrders; 
+        vm.getOrders = getOrders;
         vm.removeOrder = removeOrder;
         vm.totalPrice = totalPrice;
 
@@ -1061,7 +1087,7 @@ angular.module("config", [])
                 .removeOrder(slug)
                 .then(success, failed);
         }
-        
+
         function totalPrice(products) {
             var total = 0;
 
@@ -1076,7 +1102,7 @@ angular.module("config", [])
 
 (function () {
     'use strict';
-    
+
     angular
         .module('admin.orders', [
             'admin.orders.preview'
@@ -1084,8 +1110,9 @@ angular.module("config", [])
         .config(config);
 
     config.$inject = ['$stateProvider', '$urlRouterProvider'];
+
     function config($stateProvider, $urlRouterProvider) {
- 
+
         $stateProvider
             .state('admin.orders', {
                 url: 'orders?key&value',
@@ -1095,23 +1122,23 @@ angular.module("config", [])
                     is_granted: ['ROLE_ADMIN']
                 }
             });
-        
-        
+
+
     }
-    
+
 })();
- 
+
 (function () {
     'use strict';
 
     angular
         .module('main')
         .service('AdminOrdersService', function ($http,
-                                          $cookieStore, 
-                                          $q, 
-                                          $rootScope,
-                                          URL, BUCKET_SLUG, READ_KEY, WRITE_KEY, MEDIA_URL) {
-            
+            $cookieStore,
+            $q,
+            $rootScope,
+            URL, BUCKET_SLUG, READ_KEY, WRITE_KEY, MEDIA_URL) {
+
             $http.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
             this.getOrders = function () {
@@ -1138,7 +1165,7 @@ angular.module("config", [])
             this.removeOrder = function (slug) {
                 return $http.delete(URL + BUCKET_SLUG + '/' + slug, {
                     ignoreLoadingBar: true,
-                    headers:{
+                    headers: {
                         'Content-Type': 'application/json'
                     },
                     data: {
@@ -1167,7 +1194,7 @@ angular.module("config", [])
                 return $http.post(URL + BUCKET_SLUG + '/add-object', event);
             };
             this.upload = function (file) {
-                var fd = new FormData(); 
+                var fd = new FormData();
                 fd.append('media', file);
                 fd.append('write_key', WRITE_KEY);
 
@@ -1175,14 +1202,14 @@ angular.module("config", [])
 
                 var xhttp = new XMLHttpRequest();
 
-                xhttp.upload.addEventListener("progress",function (e) {
+                xhttp.upload.addEventListener("progress", function (e) {
                     defer.notify(parseInt(e.loaded * 100 / e.total));
                 });
-                xhttp.upload.addEventListener("error",function (e) {
+                xhttp.upload.addEventListener("error", function (e) {
                     defer.reject(e);
                 });
 
-                xhttp.onreadystatechange = function() {
+                xhttp.onreadystatechange = function () {
                     if (xhttp.readyState === 4) {
                         defer.resolve(JSON.parse(xhttp.response)); //Outputs a DOMString by default
                     }
@@ -1191,14 +1218,14 @@ angular.module("config", [])
                 xhttp.open("post", MEDIA_URL, true);
 
                 xhttp.send(fd);
-                
+
                 return defer.promise;
             }
         });
-})();  
+})();
 (function () {
     'use strict';
-    
+
     angular
         .module('admin.products', [
             'admin.products.edit',
@@ -1207,8 +1234,9 @@ angular.module("config", [])
         .config(config);
 
     config.$inject = ['$stateProvider', '$urlRouterProvider'];
+
     function config($stateProvider, $urlRouterProvider) {
- 
+
         $stateProvider
             .state('admin.products', {
                 url: 'products?key&value',
@@ -1219,19 +1247,20 @@ angular.module("config", [])
                 }
             });
     }
-    
+
 })();
- 
+
 (function () {
     'use strict';
-    
+
     angular
         .module('cart.checkout', [])
-        .config(config); 
+        .config(config);
 
     config.$inject = ['$stateProvider', 'StripeCheckoutProvider'];
+
     function config($stateProvider, StripeCheckoutProvider) {
- 
+
         $stateProvider
             .state('main.cart.checkout', {
                 url: '/checkout',
@@ -1251,9 +1280,9 @@ angular.module("config", [])
             });
     }
 })();
- 
+
 (function () {
-    'use strict'; 
+    'use strict';
 
     angular
         .module('main')
@@ -1284,14 +1313,15 @@ angular.module("config", [])
 
 (function () {
     'use strict';
-    
+
     angular
         .module('product.profile', [])
         .config(config);
 
     config.$inject = ['$stateProvider', '$urlRouterProvider'];
+
     function config($stateProvider, $urlRouterProvider) {
- 
+
         $stateProvider
             .state('main.product.profile', {
                 url: 'products/:slug',
@@ -1303,17 +1333,18 @@ angular.module("config", [])
                 }
             });
     }
-    
+
 })();
- 
+
 (function () {
     'use strict';
-    
+
     angular
         .module('admin.orders.preview', [])
         .config(config);
 
     config.$inject = ['$stateProvider', '$urlRouterProvider'];
+
     function config($stateProvider, $urlRouterProvider) {
 
         $stateProvider
@@ -1357,13 +1388,14 @@ angular.module("config", [])
                                 $state.go('admin.orders');
                             });
                         }
-                    }]
+                    }
+                ]
             });
     }
 })();
- 
+
 (function () {
-    'use strict'; 
+    'use strict';
 
     angular
         .module('main')
@@ -1389,15 +1421,15 @@ angular.module("config", [])
             function success(response) {
                 $log.info(response);
 
-                Notification.primary(
-                    {
-                        message: 'Saved',
-                        delay: 800,
-                        replaceMessage: true
-                    }
-                );
+                Notification.primary({
+                    message: 'Saved',
+                    delay: 800,
+                    replaceMessage: true
+                });
 
-                $state.go('admin.products', null, {reload: true});
+                $state.go('admin.products', null, {
+                    reload: true
+                });
                 ngDialog.close();
             }
 
@@ -1411,28 +1443,28 @@ angular.module("config", [])
                 vm.uploadProgress[1] === 100 &&
                 vm.uploadProgress[2] === 100)
                 ProductService
-                    .createProduct(product)
-                    .then(success, failed);
+                .createProduct(product)
+                .then(success, failed);
             else
                 ProductService
-                    .createProduct(product)
-                    .then(success, failed);
+                .createProduct(product)
+                .then(success, failed);
         }
 
         function upload() {
             vm.flow.files.forEach(function (item, i) {
                 if (i < 3)
                     ProductService
-                        .upload(item.file)
-                        .then(function(response){
+                    .upload(item.file)
+                    .then(function (response) {
 
-                            $scope.ngDialogData.metafields[11].children[i].value = response.media.name;
+                        $scope.ngDialogData.metafields[11].children[i].value = response.media.name;
 
-                        }, function(){
-                            console.log('failed :(');
-                        }, function(progress){
-                            vm.uploadProgress[i] = progress;
-                        });
+                    }, function () {
+                        console.log('failed :(');
+                    }, function (progress) {
+                        vm.uploadProgress[i] = progress;
+                    });
             });
 
         }
@@ -1442,50 +1474,52 @@ angular.module("config", [])
 
 (function () {
     'use strict';
-    
+
     angular
         .module('admin.products.add', [])
         .config(config);
 
     config.$inject = ['$stateProvider', '$urlRouterProvider'];
+
     function config($stateProvider, $urlRouterProvider) {
- 
+
         $stateProvider
             .state('admin.products.add', {
                 url: '/add',
                 onEnter: [
-                'ngDialog',
-                'ProductService',
-                '$stateParams',
-                '$state',
-                '$log',
-                function (ngDialog, ProductService, $stateParams, $state, $log) {
-                    openDialog(ProductService.product);
-                        
-                    function openDialog(data) {
-    
-                        var options = {
-                            templateUrl: '../views/admin/admin.products.edit.html',
-                            data: data,
-                            controller: 'AdminProductsAdd as vm',
-                            showClose: true
-                        };
-    
-                        ngDialog.open(options).closePromise.finally(function () {
-                            $state.go('admin.products');
-                        });
+                    'ngDialog',
+                    'ProductService',
+                    '$stateParams',
+                    '$state',
+                    '$log',
+                    function (ngDialog, ProductService, $stateParams, $state, $log) {
+                        openDialog(ProductService.product);
+
+                        function openDialog(data) {
+
+                            var options = {
+                                templateUrl: '../views/admin/admin.products.edit.html',
+                                data: data,
+                                controller: 'AdminProductsAdd as vm',
+                                showClose: true
+                            };
+
+                            ngDialog.open(options).closePromise.finally(function () {
+                                $state.go('admin.products');
+                            });
+                        }
                     }
-                }],
+                ],
                 data: {
                     is_granted: ['ROLE_ADMIN']
                 }
             });
     }
-    
+
 })();
- 
+
 (function () {
-    'use strict'; 
+    'use strict';
 
     angular
         .module('main')
@@ -1516,15 +1550,15 @@ angular.module("config", [])
             function success(response) {
                 $log.info(response);
 
-                Notification.primary(
-                    {
-                        message: 'Saved',
-                        delay: 800,
-                        replaceMessage: true
-                    }
-                );
+                Notification.primary({
+                    message: 'Saved',
+                    delay: 800,
+                    replaceMessage: true
+                });
 
-                $state.go('admin.products', null, {reload: true});
+                $state.go('admin.products', null, {
+                    reload: true
+                });
                 ngDialog.close();
             }
 
@@ -1538,12 +1572,12 @@ angular.module("config", [])
                 vm.uploadProgress[1] === 100 &&
                 vm.uploadProgress[2] === 100)
                 ProductService
-                    .updateProduct(product)
-                    .then(success, failed);
+                .updateProduct(product)
+                .then(success, failed);
             else
                 ProductService
-                    .updateProduct(product)
-                    .then(success, failed);
+                .updateProduct(product)
+                .then(success, failed);
         }
 
         function cancelUpload() {
@@ -1555,7 +1589,7 @@ angular.module("config", [])
 
         $scope.$product('vm.flow.files[0].file.name', function () {
             if (!vm.flow.files[0]) {
-                return ;
+                return;
             }
             var fileReader = new FileReader();
             fileReader.readAsDataURL(vm.flow.files[0].file);
@@ -1572,16 +1606,16 @@ angular.module("config", [])
             vm.flow.files.forEach(function (item, i) {
                 if (i < 3)
                     ProductService
-                        .upload(item.file)
-                        .then(function(response){
+                    .upload(item.file)
+                    .then(function (response) {
 
-                            $scope.ngDialogData.metafields[11].children[i].value = response.media.name;
+                        $scope.ngDialogData.metafields[11].children[i].value = response.media.name;
 
-                        }, function(){
-                            console.log('failed :(');
-                        }, function(progress){
-                            vm.uploadProgress[i] = progress;
-                        });
+                    }, function () {
+                        console.log('failed :(');
+                    }, function (progress) {
+                        vm.uploadProgress[i] = progress;
+                    });
             });
 
         }
@@ -1591,59 +1625,60 @@ angular.module("config", [])
 
 (function () {
     'use strict';
-    
+
     angular
         .module('admin.products.edit', [])
         .config(config);
 
     config.$inject = ['$stateProvider', '$urlRouterProvider'];
+
     function config($stateProvider, $urlRouterProvider) {
- 
+
         $stateProvider
             .state('admin.products.edit', {
                 url: '/edit/:slug',
                 onEnter: [
-                'ngDialog',
-                'ProductService',
-                '$stateParams',
-                '$state',
-                '$log',
-                function (ngDialog, ProductService, $stateParams, $state, $log) {
-                    getProduct($stateParams.slug);
-    
-                    function getProduct(slug) {
-                        function success(response) {
-                            openDialog(response.data.object);
+                    'ngDialog',
+                    'ProductService',
+                    '$stateParams',
+                    '$state',
+                    '$log',
+                    function (ngDialog, ProductService, $stateParams, $state, $log) {
+                        getProduct($stateParams.slug);
+
+                        function getProduct(slug) {
+                            function success(response) {
+                                openDialog(response.data.object);
+                            }
+
+                            function failed(response) {
+                                $log.error(response);
+                            }
+
+                            ProductService
+                                .getProductBySlug(slug)
+                                .then(success, failed);
                         }
-    
-                        function failed(response) {
-                            $log.error(response);
+
+                        function openDialog(data) {
+
+                            var options = {
+                                templateUrl: '../views/admin/admin.products.edit.html',
+                                data: data,
+                                controller: 'AdminProductsEdit as vm',
+                                showClose: true
+                            };
+
+                            ngDialog.open(options).closePromise.finally(function () {
+                                $state.go('admin.products');
+                            });
                         }
- 
-                        ProductService
-                            .getProductBySlug(slug)
-                            .then(success, failed);
                     }
-    
-                    function openDialog(data) {
-    
-                        var options = {
-                            templateUrl: '../views/admin/admin.products.edit.html',
-                            data: data,
-                            controller: 'AdminProductsEdit as vm',
-                            showClose: true
-                        };
-    
-                        ngDialog.open(options).closePromise.finally(function () {
-                            $state.go('admin.products');
-                        });
-                    }
-                }],
+                ],
                 data: {
                     is_granted: ['ROLE_ADMIN']
                 }
             });
     }
-    
+
 })();
- 

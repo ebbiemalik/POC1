@@ -28,7 +28,6 @@
 }
 
 .caption {
-    height: 130px;
     overflow: hidden
 }
 
@@ -164,12 +163,28 @@ input.ng-invalid-required {
     font-size: 35px;
     color: #94f0f0;
     text-shadow:
-		-1px -1px 0 rgb(124, 124, 124),
-		1px -1px 0 rgb(155, 154, 154),
-		-1px 1px 0 #000,
-		1px 1px 0 #000;
-    }
-    
+        -1px -1px 0 rgb(124, 124, 124),
+        1px -1px 0 rgb(155, 154, 154),
+        -1px 1px 0 #000,
+        1px 1px 0 #000;
+}
+
+.sidebar-nav .active {
+    background: #1b1b1b
+}
+
+.product-header {
+    background: rgba(255, 255, 255, .9);
+    transition: .1s;
+    font-size: 1.3em
+}
+
+.product-header .page-header {
+    transition: .1s;
+    margin-top: 15px;
+    font-size: 1em !important
+}
+
 .lead {
     font-family: Lobster;
 }
@@ -232,7 +247,175 @@ a {
     padding-left: 20px;
 }
 
+.navbar-default .navbar-nav>li>a:focus,
+.navbar-default .navbar-nav>li>a:hover {
+    color: #94f0f0;
+    background-color: transparent;
+}
 
+.navbar-default .navbar-brand:focus,
+.navbar-default .navbar-brand:hover {
+    background-color: transparent;
+    color: #94f0f0;
+}
+
+.copyright {
+    text-align: center;
+    font-family: EB Garamond;
+}
+
+.module-line {
+    background: #49e2d6;
+    width: 55px;
+    height: 1px;
+    margin: 30px auto;
+}
+
+#return-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgb(105, 105, 105);
+    background: rgba(107, 106, 106, 0.7);
+    width: 50px;
+    height: 50px;
+    display: block;
+    text-decoration: none;
+    -webkit-border-radius: 35px;
+    -moz-border-radius: 35px;
+    border-radius: 0.8em;
+    display: none;
+    -webkit-transition: all 0.3s linear;
+    -moz-transition: all 0.3s ease;
+    -ms-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+#return-to-top i {
+    color: #fff;
+    margin: 0;
+    position: relative;
+    left: 15px;
+    top: 8px;
+    font-size: 30px;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -ms-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+#return-to-top:hover {
+    background: rgba(87, 87, 87, 0.9);
+}
+
+#return-to-top:hover i {
+    color: #fff;
+    top: 5px;
+}
+
+p {
+    font-family: EB Garamond;
+    font-size: 14px;
+}
+
+.thumbnail .caption {
+    padding: 8px 9px 0px 9px;
+}
+
+.inside-group {
+    display: inline-flex;
+    margin: 0 auto;
+}
+
+.form-control-products {
+    width: 150px;
+}
+
+.inside-group button {
+    width: 60%;
+    margin: 0 5px 0 15px;
+}
+
+.btn-info.active.focus,
+.btn-info.active:focus,
+.btn-info.active:hover,
+.btn-info:active.focus,
+.btn-info:active:focus,
+.btn-info:active:hover,
+.open>.dropdown-toggle.btn-info.focus,
+.open>.dropdown-toggle.btn-info:focus,
+.open>.dropdown-toggle.btn-info:hover {
+    color: rgb(0, 0, 0);
+    background-color: #94f0f0;
+    border-color: #94f0f0;
+}
+
+.btn-info.active.focus,
+.btn-info.active:focus,
+.btn-info.active:hover,
+.btn-info:active.focus,
+.btn-info:active:focus,
+.btn-info:active:hover,
+.open>.dropdown-toggle.btn-info.focus,
+.open>.dropdown-toggle.btn-info:focus,
+.open>.dropdown-toggle.btn-info:hover {
+    color: rgb(0, 0, 0);
+    background-color: #94f0f0;
+    border-color: #94f0f0;
+}
+
+.btn-info.active.focus,
+.btn-info.active:focus,
+.btn-info.active:hover,
+.btn-info:active.focus,
+.btn-info:active:focus,
+.btn-info:active:hover,
+.open>.dropdown-toggle.btn-info.focus,
+.open>.dropdown-toggle.btn-info:focus,
+.open>.dropdown-toggle.btn-info:hover {
+    color: rgb(0, 0, 0);
+    background-color: #94f0f0;
+    border-color: #94f0f0;
+}
+
+.btn-info.active.focus,
+.btn-info.active:focus,
+.btn-info.active:hover,
+.btn-info:active.focus,
+.btn-info:active:focus,
+.btn-info:active:hover,
+.open>.dropdown-toggle.btn-info.focus,
+.open>.dropdown-toggle.btn-info:focus,
+.open>.dropdown-toggle.btn-info:hover {
+    color: rgb(0, 0, 0);
+    background-color: #94f0f0;
+    border-color: #94f0f0;
+}
+
+.btn-info.active,
+.btn-info:active,
+.open>.dropdown-toggle.btn-info {
+    color: rgb(0, 0, 0);
+    background-color: #94f0f0;
+    border-color: #94f0f0;
+}
+
+.btn-info.focus,
+.btn-info:focus {
+    color: rgb(0, 0, 0);
+    background-color: #94f0f0;
+    outline: none !important;
+
+}
+
+.btn-info.focus,
+.btn-info:focus {
+    color: rgb(0, 0, 0);
+    background-color: #94f0f0;
+    border-color: #94f0f0;
+}
 
 @media(max-width:768px) {
     #wrapper {
@@ -262,28 +445,49 @@ a {
     }
 
     .navbar-default .navbar-brand {
-        font-size: 20px;
+        font-size: 24px;
     }
 
-    .navbar-default .navbar-center > li > a {
+    .navbar-default .navbar-center>li>a {
         font-size: 13px;
+        display: inline-flex;
+    }
+
+    .form-control-products {
+        width: 50%;
+    }
+
+    .inside-group button {
+        width: 50%;
+    }
+
+    .navbar-nav.navbar-center {
+        position: absolute;
+        left: 50%;
+        transform: translatex(-10%);
+        display: inline-flex;
+    }
+
+    .lead {
+        font-family: Lobster;
+        font-size: 14px;
+    }
+
+    .h4,
+    h4 {
+        font-family: Lobster;
+        font-size: 14px;
+    }
+
+    p {
+        font-size: 12px;
+    }
+
+    .form-group label {
+        font-size: 12px;
+    }
+
+    .form-control {
+        font-size: 12px;
     }
 }
-
-.sidebar-nav .active {
-    background: #1b1b1b
-}
-
-.product-header {
-    background: rgba(255, 255, 255, .9);
-    transition: .1s;
-    font-size: 1.3em
-}
-
-.product-header .page-header {
-    transition: .1s;
-    margin-top: 15px;
-    font-size: 1em !important
-}
-
-

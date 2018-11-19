@@ -1,4 +1,3 @@
-
 // app-server.js
 var express = require('express');
 var bodyParser = require('body-parser');
@@ -14,15 +13,15 @@ app.get('/', (req, res) => {
 })
 app.post('/charge', (req, res) => {
   var token = req.body.stripeToken;
-  // Charge the user's card:
+  // Charge user's card:
   var charge = stripe.charges.create({
     amount: req.body.amount,
     currency: "usd",
     description: req.body.amount.description,
     metadata: req.body.order,
     source: token,
-  }, function(err, charge) {
-      res.send(charge);
+  }, function (err, charge) {
+    res.send(charge);
   });
 });
 http.listen(app.get('port'), () => {
