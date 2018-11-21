@@ -19,11 +19,11 @@
     <distributionManagement>
       <snapshotRepository>
         <id>nexus-snapshots</id>
-        <url>http://52.14.14.194:8081/repository/maven-snapshots/</url>
+        <url>http://18.224.18.252:8081/repository/learningnexus//</url>
       </snapshotRepository>
       <repository>
         <id>nexus-releases</id>
-        <url>http://52.14.14.194:8081/repository/maven-releases/</url>
+        <url>http://18.224.18.252:8081/repository/learningnexus//</url>
       </repository>
     </distributionManagement>
 
