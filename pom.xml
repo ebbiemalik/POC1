@@ -18,11 +18,11 @@
 
     <distributionManagement>
       <snapshotRepository>
-        <id>nexus-snapshots</id>
+        <id>firstrepo</id>
         <url>http://52.15.140.223:8081/repository/firstrepo/</url>
       </snapshotRepository>
       <repository>
-        <id>nexus-releases</id>
+        <id>firstrepo-rel</id>
         <url>http://52.15.140.223:8081/repository/firstrepo-rel/</url>
       </repository>
     </distributionManagement>
