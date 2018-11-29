@@ -18,12 +18,12 @@
 
     <distributionManagement>
       <snapshotRepository>
-        <id>firstrepo</id>
-        <url>http://52.15.140.223:8081/repository/firstrepo/</url>
+        <id>sample-snap123</id>
+        <url>http://52.15.140.223:8081/nexus/content/repositories/sample-snap123/</url>
       </snapshotRepository>
       <repository>
-        <id>firstrepo-rel</id>
-        <url>http://52.15.140.223:8081/repository/firstrepo-rel/</url>
+        <id>sample-rel123</id>
+        <url>http://52.15.140.223:8081/nexus/content/repositories/sample-rel123/</url>
       </repository>
     </distributionManagement>
 
