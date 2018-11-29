@@ -19,7 +19,7 @@
     <distributionManagement>
       <snapshotRepository>
         <id>sample-snap1234</id>
-        <url>http://52.15.140.223:8081/nexus/content/repositories/sample-snap1234/</url>
+        <url>http://52.15.140.223:8081/nexus/content/repositories/sample-sanp1234/</url>
       </snapshotRepository>
       <repository>
         <id>sample-rel1234</id>
